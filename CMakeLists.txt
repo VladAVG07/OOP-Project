@@ -54,6 +54,16 @@ add_executable(${PROJECT_NAME}
     main.cpp
     generated/src/Helper.cpp
     env_fixes.h
+        src/Card.cpp
+        src/Deck.cpp
+        src/Deck.cpp
+        src/Deck.cpp
+        src/Dealer.cpp
+        src/Dealer.cpp
+        src/Player.cpp
+        src/Player.cpp
+        src/Game.cpp
+        src/Game.cpp
 )
 
 include(cmake/CompilerFlags.cmake)
