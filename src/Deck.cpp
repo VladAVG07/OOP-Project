@@ -13,6 +13,8 @@ private:
     const std::string ranks[13] = {"Ace", "2" , "3" , "4" , "5" , "6" , "7"
                             , "8" , "9" , "10" , "Jack" , "Queen" , "King"};
 
+    const int DECK_SIZE = 52;
+
 public:
     Deck() {
         for(int i = 0 ; i < 4 ; i++) {
@@ -53,7 +55,7 @@ public:
     void shuffle() {
         srand(time(nullptr));
 
-        for(int i = cards.size() -1 ; i > 0 ; i--) {
+        for(int i = DECK_SIZE-1 ; i > 0 ; i--) {
             int j = rand() % (i+1);
 
             Card aux;
@@ -64,7 +66,7 @@ public:
     };
 
     friend std::ostream& operator<<(std::ostream & out , Deck & d) {
-        for(int i = 0 ; i < d.cards.size() ; i++) {
+        for(int i = 0 ; i < d.DECK_SIZE ; i++) {
             out << d.cards[i];
         }
         return out;
