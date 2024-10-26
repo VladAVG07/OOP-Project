@@ -6,6 +6,7 @@
 #include <SFML/Graphics.hpp>
 
 #include <Helper.h>
+#include "src/Deck.cpp"
 
 //////////////////////////////////////////////////////////////////////
 /// NOTE: this include is needed for environment-specific fixes     //
@@ -29,15 +30,20 @@ SomeClass *getC() {
 
 
 int main() {
+    Deck d1;
+    std::cout << d1;
+    std::cout << "--------------" << '\n';
+    d1.shuffle();
+    std::cout << d1;
     ////////////////////////////////////////////////////////////////////////
     /// NOTE: this function call is needed for environment-specific fixes //
-    init_threads();                                                       //
-    ////////////////////////////////////////////////////////////////////////
-    ///
-    std::cout << "Hello, world!\n";
-    std::array<int, 100> v{};
-    int nr;
-    std::cout << "Introduceți nr: ";
+    // init_threads();                                                       //
+    // ////////////////////////////////////////////////////////////////////////
+    // ///
+    // std::cout << "Hello, world!\n";
+    // std::array<int, 100> v{};
+    // int nr;
+    // std::cout << "Introduceți nr: ";
     /////////////////////////////////////////////////////////////////////////
     /// Observație: dacă aveți nevoie să citiți date de intrare de la tastatură,
     /// dați exemple de date de intrare folosind fișierul tastatura.txt
@@ -58,35 +64,35 @@ int main() {
     /// program care merg (și să le evitați pe cele care nu merg).
     ///
     /////////////////////////////////////////////////////////////////////////
-    std::cin >> nr;
-    /////////////////////////////////////////////////////////////////////////
-    for(int i = 0; i < nr; ++i) {
-        std::cout << "v[" << i << "] = ";
-        std::cin >> v[i];
-    }
-    std::cout << "\n\n";
-    std::cout << "Am citit de la tastatură " << nr << " elemente:\n";
-    for(int i = 0; i < nr; ++i) {
-        std::cout << "- " << v[i] << "\n";
-    }
-    ///////////////////////////////////////////////////////////////////////////
-    /// Pentru date citite din fișier, NU folosiți tastatura.txt. Creați-vă voi
-    /// alt fișier propriu cu ce alt nume doriți.
-    /// Exemplu:
-    /// std::ifstream fis("date.txt");
-    /// for(int i = 0; i < nr2; ++i)
-    ///     fis >> v2[i];
-    ///
-    ///////////////////////////////////////////////////////////////////////////
-    ///                Exemplu de utilizare cod generat                     ///
-    ///////////////////////////////////////////////////////////////////////////
-    Helper helper;
-    helper.help();
-    ///////////////////////////////////////////////////////////////////////////
-
-    SomeClass *c = getC();
-    std::cout << c << "\n";
-    delete c;
+    // std::cin >> nr;
+    // /////////////////////////////////////////////////////////////////////////
+    // for(int i = 0; i < nr; ++i) {
+    //     std::cout << "v[" << i << "] = ";
+    //     std::cin >> v[i];
+    // }
+    // std::cout << "\n\n";
+    // std::cout << "Am citit de la tastatură " << nr << " elemente:\n";
+    // for(int i = 0; i < nr; ++i) {
+    //     std::cout << "- " << v[i] << "\n";
+    // }
+    // ///////////////////////////////////////////////////////////////////////////
+    // /// Pentru date citite din fișier, NU folosiți tastatura.txt. Creați-vă voi
+    // /// alt fișier propriu cu ce alt nume doriți.
+    // /// Exemplu:
+    // /// std::ifstream fis("date.txt");
+    // /// for(int i = 0; i < nr2; ++i)
+    // ///     fis >> v2[i];
+    // ///
+    // ///////////////////////////////////////////////////////////////////////////
+    // ///                Exemplu de utilizare cod generat                     ///
+    // ///////////////////////////////////////////////////////////////////////////
+    // Helper helper;
+    // helper.help();
+    // ///////////////////////////////////////////////////////////////////////////
+    //
+    // SomeClass *c = getC();
+    // std::cout << c << "\n";
+    // delete c;
 
     sf::RenderWindow window;
     ///////////////////////////////////////////////////////////////////////////
@@ -101,36 +107,36 @@ int main() {
     /// window.setFramerateLimit(60);                                       ///
     ///////////////////////////////////////////////////////////////////////////
 
-    while(window.isOpen()) {
-        bool shouldExit = false;
-        sf::Event e{};
-        while(window.pollEvent(e)) {
-            switch(e.type) {
-            case sf::Event::Closed:
-                window.close();
-                break;
-            case sf::Event::Resized:
-                std::cout << "New width: " << window.getSize().x << '\n'
-                          << "New height: " << window.getSize().y << '\n';
-                break;
-            case sf::Event::KeyPressed:
-                std::cout << "Received key " << (e.key.code == sf::Keyboard::X ? "X" : "(other)") << "\n";
-                if(e.key.code == sf::Keyboard::Escape)
-                    shouldExit = true;
-                break;
-            default:
-                break;
-            }
-        }
-        if(shouldExit) {
-            window.close();
-            break;
-        }
-        using namespace std::chrono_literals;
-        std::this_thread::sleep_for(300ms);
-
-        window.clear();
-        window.display();
-    }
+    // while(window.isOpen()) {
+    //     bool shouldExit = false;
+    //     sf::Event e{};
+    //     while(window.pollEvent(e)) {
+    //         switch(e.type) {
+    //         case sf::Event::Closed:
+    //             window.close();
+    //             break;
+    //         case sf::Event::Resized:
+    //             std::cout << "New width: " << window.getSize().x << '\n'
+    //                       << "New height: " << window.getSize().y << '\n';
+    //             break;
+    //         case sf::Event::KeyPressed:
+    //             std::cout << "Received key " << (e.key.code == sf::Keyboard::X ? "X" : "(other)") << "\n";
+    //             if(e.key.code == sf::Keyboard::Escape)
+    //                 shouldExit = true;
+    //             break;
+    //         default:
+    //             break;
+    //         }
+    //     }
+    //     if(shouldExit) {
+    //         window.close();
+    //         break;
+    //     }
+    //     using namespace std::chrono_literals;
+    //     std::this_thread::sleep_for(300ms);
+    //
+    //     window.clear();
+    //     window.display();
+    // }
     return 0;
 }
