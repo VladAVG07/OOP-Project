@@ -39,7 +39,7 @@ void Game::start() {
     //std::cout << this->deck;
     std::cout << "---------------------\n";
 
-    for(int i = 0 ; i < this->players.size() ; i++) {
+    for(int i = 0 ; i < static_cast<int>(this->players.size()) ; i++) {
         std::cout << "Introduceti numele jucatorului: "  << std::endl;
         std::string numeJucator;
         std::cin >> numeJucator;
