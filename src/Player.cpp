@@ -1,104 +1,104 @@
 //
-// Created by vladg on 10/26/2024.
+// Created by vladg on 11/6/2024.
 //
 
-#include <ostream>
-#include <vector>
-#include "Card.cpp"
+#include "Player.h"
 
-class Player {
-private:
-    std::vector<Card> hand;
-    std::string name;
-    int balance;
-    int current_bet;
-    bool folded;
-    bool active;
+Player::Player(std::vector<Card> hand, std::string name) {
+    this->hand = hand;
+    this->name = name;
+    this->balance = 1000;
+    this->current_bet = 10;
+    folded = false;
+    this->active = true;
+}
 
-public:
-    Player(std::vector<Card> hand, std::string name) {
-        this->hand = hand;
-        this->name = name;
-        this->balance = 1000;
-        this->current_bet = 10;
-        folded = false;
-    }
+Player::Player() = default;
 
-    ~Player() = default;
+Player::~Player() = default;
 
-    void call(int newBet) {
-        if(this->current_bet+newBet < this->balance) {
-            this->fold();
-        } else {
-            this->current_bet += newBet;
-            this->check();
-        }
-    };
+Player::Player(const Player &other)
+    : hand(other.hand),
+      name(other.name),
+      balance(other.balance),
+      current_bet(other.current_bet),
+      folded(other.folded),
+      active(other.active) {}
 
-    void check() {
-        this->active = false;
-    };
+Player::Player(Player &&other) noexcept
+    : hand(std::move(other.hand)),
+      name(std::move(other.name)),
+      balance(other.balance),
+      current_bet(other.current_bet),
+      folded(other.folded),
+      active(other.active) {}
 
-    void raise(int newBet) {
+Player &Player::operator=(const Player &other) {
+    if (this == &other)
+        return *this;
+    hand = other.hand;
+    name = other.name;
+    balance = other.balance;
+    current_bet = other.current_bet;
+    folded = other.folded;
+    active = other.active;
+    return *this;
+}
+
+Player &Player::operator=(Player &&other) noexcept {
+    if (this == &other)
+        return *this;
+    hand = std::move(other.hand);
+    name = std::move(other.name);
+    balance = other.balance;
+    current_bet = other.current_bet;
+    folded = other.folded;
+    active = other.active;
+    return *this;
+}
+
+void Player::check() {
+    this->active = false;
+}
+
+void Player::fold() {
+    this->folded = true;
+}
+
+void Player::set_active(const bool active) {
+    this->active = active;
+}
+
+void Player::call(int newBet) {
+    if(this->current_bet+newBet < this->balance) {
+        this->fold();
+    } else {
         this->current_bet += newBet;
-    };
-
-    void fold() {
-        this->folded = true;
-    };
-
-    void set_active(bool active) {
-        this->active = active;
-    };
-
-    Player(const Player &other)
-        : hand(other.hand),
-          name(other.name),
-          balance(other.balance),
-          current_bet(other.current_bet),
-          folded(other.folded),
-          active(other.active) {
+        this->check();
     }
+}
 
-    Player(Player &&other) noexcept
-        : hand(std::move(other.hand)),
-          name(std::move(other.name)),
-          balance(other.balance),
-          current_bet(other.current_bet),
-          folded(other.folded),
-          active(other.active) {
-    }
+void Player::raise(int newBet) {
+    this->current_bet += newBet;
+}
 
-    Player & operator=(const Player &other) {
-        if (this == &other)
-            return *this;
-        hand = other.hand;
-        name = other.name;
-        balance = other.balance;
-        current_bet = other.current_bet;
-        folded = other.folded;
-        active = other.active;
-        return *this;
-    }
+std::string Player::get_name() {
+    return this->name;
+}
 
-    Player & operator=(Player &&other) noexcept {
-        if (this == &other)
-            return *this;
-        hand = std::move(other.hand);
-        name = std::move(other.name);
-        balance = other.balance;
-        current_bet = other.current_bet;
-        folded = other.folded;
-        active = other.active;
-        return *this;
+std::ostream & operator<<(std::ostream &os, const Player &obj) {
+    os << obj.name << '\n' << "balance: " << obj.balance << " current bet:" << obj.current_bet << '\n';
+    for(int i = 0 ; i < 2 ; i++) {
+        os << obj.hand[i] << " / ";
     }
+    os << '\n';
+    return os;
+}
 
-    friend std::ostream & operator<<(std::ostream &os, const Player &obj) {
-        os << obj.name << '\n' << "balance: " << obj.balance << " current bet:" << obj.current_bet << '\n';
-        for(int i = 0 ; i < 2 ; i++) {
-            os << obj.hand[i] << " / ";
-        }
-        os << '\n';
-        return os;
-    }
-};
+
+
+
+
+
+
+

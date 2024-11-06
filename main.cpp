@@ -6,7 +6,8 @@
 #include <SFML/Graphics.hpp>
 
 #include <Helper.h>
-#include "src/Deck.cpp"
+#include "src/Deck.h"
+#include "src/Game.h"
 
 //////////////////////////////////////////////////////////////////////
 /// NOTE: this include is needed for environment-specific fixes     //
@@ -30,11 +31,14 @@ SomeClass *getC() {
 
 
 int main() {
-    Deck d1;
-    std::cout << d1;
-    std::cout << "--------------" << '\n';
-    d1.shuffle();
-    std::cout << d1;
+
+    Game g(2);
+    g.start();
+    // Deck d1;
+    // std::cout << d1;
+    // std::cout << "--------------" << '\n';
+    // d1.shuffle();
+    // std::cout << d1;
     ////////////////////////////////////////////////////////////////////////
     /// NOTE: this function call is needed for environment-specific fixes //
     // init_threads();                                                       //
