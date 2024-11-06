@@ -61,7 +61,7 @@ void Game::start() {
     for(int i = 0 ; i < 2 ; i++) {
         this->tableCards.push_back(this->deck.dealFromDeck());
 
-        for(int j = 0 ; j < this->players.size() ; j++) {
+        for(int j = 0 ; j < static_cast<int>(this->players.size()) ; j++) {
             while(true) {
                 std::cout << this->players[j];
                 std::cout << "Optiuni:\n" << "1.Check\n" << "2.Call\n" << "3.Fold\n" << "4.Bet\n";
