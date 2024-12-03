@@ -6,29 +6,41 @@
 
 #include <string>
 #include <ostream>
+#include <SFML/Graphics.hpp>
 
 class Card {
 private:
+    sf::Texture *textura;
+    sf::Sprite *sprite;
     std::string rank;
     std::string suit;
 
 public:
     Card(std::string rank, std::string suit);
-    Card();
-    ~Card();
-    Card(const Card &other);
-    Card(Card &&other) noexcept ;
-    Card & operator=(const Card &other);
 
-    std::string rank1() const;
+    Card();
+
+    ~Card();
+
+    Card(const Card &other);
+
+    Card(Card &&other) noexcept;
+
+    Card &operator=(const Card &other);
+
+    [[nodiscard]] std::string rank1() const;
 
     void set_rank(const std::string &rank);
 
-    std::string suit1() const;
+    [[nodiscard]] std::string suit1() const;
 
     void set_suit(const std::string &suit);
 
-    friend std::ostream & operator<<(std::ostream &os, const Card &obj);
+    sf::Sprite * sprite1() {
+        return sprite;
+    }
+
+    friend std::ostream &operator<<(std::ostream &os, const Card &obj);
 };
 
 #endif //CARD_H

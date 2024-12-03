@@ -2,7 +2,9 @@
 // Created by vladg on 11/6/2024.
 //
 
-#include "Card.h"
+#include "../include/Card.h"
+
+#include <iostream>
 
 Card::Card(std::string rank, std::string suit) {
     this->rank = rank;
@@ -46,17 +48,9 @@ void Card::set_suit(const std::string &suit) {
     this->suit = suit;
 }
 
-std::ostream & operator<<(std::ostream &os, const Card &obj) {
+std::ostream &operator<<(std::ostream &os, const Card &obj) {
     return os
            << "rank: " << obj.rank
            << " suit: " << obj.suit
-            << '\n';
+           << '\n';
 }
-
-
-
-
-
-
-
-
