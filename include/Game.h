@@ -5,17 +5,18 @@
 #define GAME_H
 
 #include <vector>
-#include "Player.h"
 #include "Deck.h"
 #include <SFML/Graphics.hpp>
 
 #include "Dealer.h"
+#include "HumanPlayer.h"
 
 class Game {
 private:
     int nrRounds = 3;
+    int nrPlayers;
     Deck deck;
-    std::vector<Player> players;
+    std::vector<HumanPlayer> players;
     std::vector<Card> tableCards;
 
     sf::RenderWindow *window;

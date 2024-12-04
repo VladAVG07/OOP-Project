@@ -7,17 +7,28 @@
 #include <vector>
 
 #include "Card.h"
+#include "HumanPlayer.h"
+#include "Player.h"
 
 
 class Validator {
-
-static void validate(const std::vector<Card>& playerHand, const std::pmr::vector<Card>& dealerHand) {
-
-}
-
 public:
     Validator() = default;
     ~Validator();
+
+    static void getWinner(std::vector<HumanPlayer> &players);
+    static void setRanks(std::vector<HumanPlayer> &players);
+    static void sortHand(std::vector<Card> &hand);
+    static bool isRoyalFlush(std::vector<Card> &hand);
+    static bool isStraightFlush(std::vector<Card> &hand);
+    static bool isFourOfAKind(std::vector<Card> &hand);
+    static bool isFullHouse(std::vector<Card> &hand);
+    static bool isFlush(std::vector<Card> &hand);
+    static bool isStraight(std::vector<Card> &hand);
+    static bool isThreeOfAKind(std::vector<Card> &hand);
+    static bool isTwoPair(std::vector<Card> &hand);
+    static bool isPair(const std::vector<Card> &hand);
+    static auto HighCard(std::vector<Card> &hand) -> Card;
 };
 
 

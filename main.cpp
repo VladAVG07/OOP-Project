@@ -14,24 +14,34 @@
 /// You can remove this include and the call from main              //
 /// if you have tested on all environments, and it works without it //
 #include "env_fixes.h"                                              //
+#include "include/PokerExceptions.h"
 //////////////////////////////////////////////////////////////////////
 
 
 int main() {
     ////////////////////////////////////////////////////////////////////////
     /// NOTE: this function call is needed for environment-specific fixes //
-    init_threads();
 
-    Game game(2);
+    try {
+        init_threads();
 
-    while (game.isRunning()) {
+        Game game(2);
 
-        using namespace std::chrono_literals;
-        std::this_thread::sleep_for(300ms);
+        game.start();
 
-        game.update();
+        while (game.isRunning()) {
 
-        game.render();
+            using namespace std::chrono_literals;
+            std::this_thread::sleep_for(300ms);
+
+            game.update();
+
+            game.render();
+        }
+    } catch (InvalidPlayerNameException &ex) {
+        std::cout << "Eroare: " << ex.what() << "\n";
+    } catch (MaxPlayersExcedeedException &ex) {
+        std::cout << "Eroare: " << ex.what() << "\n";
     }
 
     // sf::RenderWindow window;

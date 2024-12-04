@@ -16,7 +16,7 @@ private:
     std::vector<Card> cards;
 
     const std::string suits[4] = {"hearts", "clubs", "diamonds", "spades"};
-    const std::string ranks[13] = {"Ace", "2", "3", "4", "5", "6", "7", "8", "9", "10", "Jack", "Queen", "King"};
+    const std::string ranks[13] = {"2", "3", "4", "5", "6", "7", "8", "9", "10", "11" ,"12", "13", "14"};
 
     const int DECK_SIZE = 52;
 

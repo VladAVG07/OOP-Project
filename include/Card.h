@@ -40,6 +40,8 @@ public:
         return sprite;
     }
 
+    friend bool operator<(const Card &lhs, const Card &rhs);
+
     friend std::ostream &operator<<(std::ostream &os, const Card &obj);
 };
 
