@@ -5,18 +5,33 @@
 #define GAME_H
 
 #include <vector>
-#include "Player.h"
 #include "Deck.h"
+#include <SFML/Graphics.hpp>
+
+#include "Dealer.h"
+#include "HumanPlayer.h"
+#include "Player.h"
 
 class Game {
 private:
     int nrRounds = 3;
+    int nrPlayers;
     Deck deck;
-    std::vector<Player> players;
+    std::vector<std::shared_ptr<Player>> players;
     std::vector<Card> tableCards;
+
+    sf::RenderWindow *window;
+    sf::VideoMode videoMode;
+    sf::Event ev;
+    sf::Font *font;
+    sf::Text *titleText;
+
+    void initWindow();
+    void initVar();
 
 public:
     Game(int nrPlayers);
+
     ~Game();
 
     void start();
@@ -35,11 +50,18 @@ public:
           tableCards(std::move(other.tableCards)) {
     }
 
-    Game & operator=(const Game &other);
+    Game &operator=(const Game &other);
 
-    Game & operator=(Game &&other) noexcept;
+    Game &operator=(Game &&other) noexcept;
+
+    void update();
+
+    void render();
+
+    void pollEvents();
+
+    [[nodiscard]] bool isRunning() const;
 };
-
 
 
 #endif //GAME_H

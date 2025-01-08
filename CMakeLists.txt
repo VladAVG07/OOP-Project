@@ -58,10 +58,20 @@ add_executable(${PROJECT_NAME}
         src/Deck.cpp
         src/Player.cpp
         src/Game.cpp
-        src/Card.h
-        src/Deck.h
-        src/Player.h
-        src/Game.h
+        include/Card.h
+        include/Deck.h
+        include/Player.h
+        include/Game.h
+        src/Validator.cpp
+        include/Validator.h
+        src/Dealer.cpp
+        include/Dealer.h
+        src/HumanPlayer.cpp
+        include/HumanPlayer.h
+        src/AIPlayer.cpp
+        include/AIPlayer.h
+        src/PokerExceptions.cpp
+        include/PokerExceptions.h
 )
 
 include(cmake/CompilerFlags.cmake)

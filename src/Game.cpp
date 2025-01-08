@@ -2,15 +2,41 @@
 // Created by vladg on 11/6/2024.
 //
 
-#include "Game.h"
+#include "../include/Game.h"
 
+#include <cmath>
 #include <iostream>
 
-Game::Game(const int nrPlayers) {
-    this->players.resize(nrPlayers);
+#include "../include/PokerExceptions.h"
+#include "../include/Validator.h"
+
+
+void Game::initWindow() {
+    // this->videoMode.height = 1000;
+    // this->videoMode.width = 1600;
+    // this->window = new sf::RenderWindow(this->videoMode, "My Window", sf::Style::Close);
+    // this->window->setVerticalSyncEnabled(true);
+    this->deck.sprite1()->setPosition(sf::Vector2f{0, 400});
 }
 
-Game::~Game() = default;
+void Game::initVar() {
+    this->window = nullptr;
+    this->font = new sf::Font();
+    this->font->loadFromFile("../assets/fonts/KingdomCrown.otf");
+}
+
+Game::Game(const int nrPlayers) {
+    if (nrPlayers > 2) {
+        throw MaxPlayersExcedeedException("prea multi jucatori");
+    }
+    this->nrPlayers = nrPlayers;
+    // this->initVar();
+    // this->initWindow();
+}
+
+Game::~Game() {
+    //delete this->window;
+};
 
 Game &Game::operator=(const Game &other) {
     if (this == &other)
@@ -36,59 +62,146 @@ Game &Game::operator=(Game &&other) noexcept {
 void Game::start() {
     std::cout << "Start Game, player numbers: " << this->players.size() << std::endl;
     this->deck.shuffle();
-    //std::cout << this->deck;
+    std::cout << this->deck;
     std::cout << "---------------------\n";
 
-    for(int i = 0 ; i < static_cast<int>(this->players.size()) ; i++) {
-        std::cout << "Introduceti numele jucatorului: "  << std::endl;
+    for (int i = 0; i < this->nrPlayers; i++) {
+        std::cout << "Introduceti numele jucatorului: " << std::endl;
         std::string numeJucator;
         std::cin >> numeJucator;
         std::vector<Card> playerHand;
         playerHand.push_back(this->deck.dealFromDeck());
         playerHand.push_back(this->deck.dealFromDeck());
-        Player p(playerHand , numeJucator);
-        this->players[i] = p;
-        std::cout << players[i];
+        HumanPlayer p(playerHand, numeJucator, 1000);
+        this->players.emplace_back(std::move(std::make_shared<HumanPlayer>(p)));
+        auto player = players[i];
+        std::cout << *player << '\n';
     }
 
-    std::cout<<"Cartile de pe masa: " << '\n';
-    for(int i = 0 ; i < 3 ; i++) {
-        this->tableCards.push_back(this->deck.dealFromDeck());
-        std::cout << tableCards[i];
-    }
+    std::vector<Card> dealerHand;
+    dealerHand.push_back(this->deck.dealFromDeck());
+    dealerHand.push_back(this->deck.dealFromDeck());
 
-    //TODO AFISARE PENTRU TOATE CARTILE
-    for(int i = 0 ; i < 2 ; i++) {
-        this->tableCards.push_back(this->deck.dealFromDeck());
+    Dealer d(dealerHand, "Dealer", 1000);
 
-        for(int j = 0 ; j < static_cast<int>(this->players.size()) ; j++) {
-            while(true) {
-                std::cout << this->players[j];
-                std::cout << "Optiuni:\n" << "1.Check\n" << "2.Call\n" << "3.Fold\n" << "4.Bet\n";
-                int varianta;
-                std::cin >> varianta;
-                if(varianta == 1) {
-                    this->players[i].check();
-                    break;
+    this->players.emplace_back(std::move(std::make_shared<Dealer>(d)));
+
+    std::cout << "Dealerul a intrat in joc, let's start" << "\n";
+
+    std::vector<Card> tableCards;
+    tableCards.emplace_back(this->deck.dealFromDeck());
+    tableCards.emplace_back(this->deck.dealFromDeck());
+    tableCards.emplace_back(this->deck.dealFromDeck());
+
+    for(int i = 1 ; i <= 2 ; i++) {
+        int tableBet = 0;
+        int activePlayers = 0;
+        for (const auto &player: players) {
+            if (!std::dynamic_pointer_cast<Dealer>(player) && player->active1()) {
+                activePlayers++;
+                std::cout << "Pariul de la masa: " << tableBet << "\n";
+                std::cout << *player << "\n";
+                for (const auto &card: player->hand1()) {
+                    std::cout << card;
                 }
-                if(varianta == 2) {
-                    this->players[i].call(10);
+                std::cout << "Optiuni: " << "\n" << "1.Check" << "\n" << "2.Call" << "\n" << "3.Bet" << "\n" << "4.Fold" <<
+                        "\n";
+                int optiune;
+                std::cin >> optiune;
+                switch (optiune) {
+                    case 1:
+                        if (!tableBet) {
+                            player->check();
+                        } else {
+                            std::cout << "Va trebui sa maresti betul cu " << tableBet << "\n";
+                            player->call(tableBet);
+                        }
                     break;
-                }
-                if(varianta == 3) {
-                    this->players[i].fold();
+                    case 2:
+                        std::cout << "Va trebui sa maresti betul cu " << tableBet << "\n";
+                    player->call(tableBet);
                     break;
-                }
-                if(varianta == 4) {
-                    std::cout << "Cu cat vrei sa maresti? \n";
-                    int newBet;
-                    std::cin >> newBet;
-                    this->players[i].raise(newBet);
+                    case 3:
+                        std::cout << "Cu cat vrei sa maresti?" << "\n";
+                    int bet;
+                    std::cin >> bet;
+                    if (bet > player->balance1()) std::cout << "nu ai atatia bani" << "\n";
+                    player->raise(bet);
+                    tableBet = bet;
+                    break;
+                    case 4:
+                        player->fold();
+                    break;
+                    default:
+                        std::cout << "Optiune gresita ghinion" << "\n";
                     break;
                 }
             }
+            if (player->balance1() <= 0 || !player->active1()) {
+                player->fold();
+                activePlayers--;
+            }
+        }
+        if (activePlayers == 1) std::cout << "avem un castigator, meciul s-a terminat" << "\n";
+        std::cout << "\n" << "--------------CARTILE DE PE MASA-----------------" << "\n";
+        for (const auto &card: tableCards) {
+            std::cout << card;
+        }
+        std::cout << "--------------CARTILE DE PE MASA-----------------" << "\n";
+    }
+    // for(int i = 0 ; i < this->nrPlayers ; i++) {
+    //     players[i].set_hand(tableCards);
+    // }
+
+    for (const auto &player: this->players) {
+        player->set_hand(tableCards);
+        std::cout << player->get_name() <<  " mana:" << "\n";
+        for(const auto& card : player->hand1()) {
+            std::cout << card;
+        }
+    }
+
+    Validator::setRanks(this->players);
+
+    // for(int i = 0; i < this->nrPlayers ; i++) {
+    //     std::cout << "Jucatorul " << i << "\n";
+    //     for (size_t j = 0 ; j < this->players[i].hand1().size() ; j++) {
+    //         std::cout << this->players[i].hand1()[j];
+    //     }
+    //     std::cout << '\n';
+    // }
+
+    for(const auto& player : players) {
+        std::cout << player->getHandRank() << '\n';
+    }
+
+    Validator::getWinner(this->players);
+}
+
+void Game::update() {
+    this->pollEvents();
+}
+
+void Game::render() {
+}
+
+void Game::pollEvents() {
+    while (this->window->pollEvent(this->ev)) {
+        switch (this->ev.type) {
+            case sf::Event::Closed:
+                this->window->close();
+                break;
+            case sf::Event::KeyPressed:
+                if (ev.key.code == sf::Keyboard::Escape) {
+                    this->window->close();
+                }
+                break;
+            default:
+                break;
         }
     }
 }
 
-
+bool Game::isRunning() const {
+    return this->window->isOpen();
+}
