@@ -31,6 +31,11 @@ public:
     virtual ~Player();
     void call(int newBet);
     void check();
+
+    [[nodiscard]] int balance1() const;
+
+    [[nodiscard]] bool active1() const;
+
     void raise(int newBet);
     void fold();
     void set_active(bool active);

@@ -3,29 +3,41 @@
 //
 #include "../include/Validator.h"
 
-void Validator::getWinner(std::vector<HumanPlayer> &players) {
-    int maxRank;
-    for(size_t i = 0 ; i < players.size() ; i++) {
+#include <iostream>
 
+void Validator::getWinner(std::vector<std::shared_ptr<Player>> &players) {
+    int maxRank = 0;
+    for(const auto& player : players) {
+        if(player->getHandRank() > maxRank) maxRank = player->getHandRank();
+    }
+
+    for(const auto& player : players) {
+        if(player->getHandRank() == maxRank) {
+            std::cout << "jucatorul " << player->get_name() << " castigator\n";
+        }
     }
 }
 
-void Validator::setRanks(std::vector<HumanPlayer> &players) {
-    for(size_t i = 0 ; i < players.size() ; i++) {
-        std::vector<Card> currHand = players[i].hand1();
+void Validator::setRanks(std::vector<std::shared_ptr<Player>> &players) {
+    for (const auto& currentPlayer : players) {
+        std::vector<Card> currHand = currentPlayer->hand1();
+
         sortHand(currHand);
-        if(isRoyalFlush(currHand)) players[i].set_hand_rank(10);
-        if(isStraightFlush(currHand)) players[i].set_hand_rank(9);
-        if(isFourOfAKind(currHand)) players[i].set_hand_rank(8);
-        if(isFullHouse(currHand)) players[i].set_hand_rank(7);
-        if(isFlush(currHand)) players[i].set_hand_rank(6);
-        if(isStraight(currHand)) players[i].set_hand_rank(5);
-        if(isThreeOfAKind(currHand)) players[i].set_hand_rank(4);
-        if(isTwoPair(currHand)) players[i].set_hand_rank(3);
-        if(isPair(currHand)) players[i].set_hand_rank(2);
-        else players[i].set_hand_rank(1);
+
+        if (isRoyalFlush(currHand)) currentPlayer->set_hand_rank(10);
+        else if (isStraightFlush(currHand)) currentPlayer->set_hand_rank(9);
+        else if (isFourOfAKind(currHand)) currentPlayer->set_hand_rank(8);
+        else if (isFullHouse(currHand)) currentPlayer->set_hand_rank(7);
+        else if (isFlush(currHand)) currentPlayer->set_hand_rank(6);
+        else if (isStraight(currHand)) currentPlayer->set_hand_rank(5);
+        else if (isThreeOfAKind(currHand)) currentPlayer->set_hand_rank(4);
+        else if (isTwoPair(currHand)) currentPlayer->set_hand_rank(3);
+        else if (isPair(currHand)) currentPlayer->set_hand_rank(2);
+        else currentPlayer->set_hand_rank(1);
     }
 }
+
+
 
 void Validator::sortHand(std::vector<Card> &hand) {
     std::sort(hand.begin(), hand.end());
@@ -50,13 +62,16 @@ bool Validator::isStraightFlush(std::vector<Card> &hand) {
 }
 
 bool Validator::isFourOfAKind(std::vector<Card> &hand) {
-    for(size_t i = 0 ; i < hand.size() - 3 ; i++) {
-        if((hand[i].rank1() == hand[i+1].rank1()) == (hand[i+2].rank1() == hand[i+3].rank1())) {
+    for (size_t i = 0; i < hand.size() - 3; i++) {
+        if (hand[i].rank1() == hand[i + 1].rank1() &&
+            hand[i].rank1() == hand[i + 2].rank1() &&
+            hand[i].rank1() == hand[i + 3].rank1()) {
             return true;
-        }
+            }
     }
     return false;
 }
+
 
 bool Validator::isFullHouse(std::vector<Card> &hand) {
     if(isPair(hand) && isThreeOfAKind(hand)) {

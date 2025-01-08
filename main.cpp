@@ -29,15 +29,15 @@ int main() {
 
         game.start();
 
-        while (game.isRunning()) {
-
-            using namespace std::chrono_literals;
-            std::this_thread::sleep_for(300ms);
-
-            game.update();
-
-            game.render();
-        }
+        // while (game.isRunning()) {
+        //
+        //     using namespace std::chrono_literals;
+        //     std::this_thread::sleep_for(300ms);
+        //
+        //     game.update();
+        //
+        //     game.render();
+        // }
     } catch (InvalidPlayerNameException &ex) {
         std::cout << "Eroare: " << ex.what() << "\n";
     } catch (MaxPlayersExcedeedException &ex) {

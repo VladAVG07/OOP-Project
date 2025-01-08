@@ -16,8 +16,8 @@ public:
     Validator() = default;
     ~Validator();
 
-    static void getWinner(std::vector<HumanPlayer> &players);
-    static void setRanks(std::vector<HumanPlayer> &players);
+    static void getWinner(std::vector<std::shared_ptr<Player>> &players);
+    static void setRanks(std::vector<std::shared_ptr<Player>> &players);
     static void sortHand(std::vector<Card> &hand);
     static bool isRoyalFlush(std::vector<Card> &hand);
     static bool isStraightFlush(std::vector<Card> &hand);

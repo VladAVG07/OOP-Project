@@ -5,7 +5,7 @@
 #include "../include/PokerExceptions.h"
 
 Player::Player(std::vector<Card> hand, std::string name, int balance)
-    : hand(std::move(hand)), name(std::move(name)), balance(balance), currentBet(0), folded(false), active(false),
+    : hand(std::move(hand)), name(std::move(name)), balance(balance), currentBet(0), folded(false), active(true),
       textura(nullptr), sprite(nullptr) {
     Player::nrPlayers++;
     if(this->name.empty()) {
@@ -26,7 +26,17 @@ void Player::call(int newBet) {
     balance -= newBet;
 }
 
-void Player::check() {}
+void Player::check() {
+    this->active = true;
+}
+
+int Player::balance1() const {
+    return balance;
+}
+
+bool Player::active1() const {
+    return active;
+}
 
 void Player::raise(int newBet) {
     currentBet = newBet;
@@ -35,6 +45,7 @@ void Player::raise(int newBet) {
 
 void Player::fold() {
     folded = true;
+    this->active = false;
 }
 
 void Player::set_active(bool active) {
