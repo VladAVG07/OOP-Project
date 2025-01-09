@@ -38,6 +38,10 @@ bool Player::active1() const {
     return active;
 }
 
+void Player::set_balance(int balance) {
+    this->balance = balance;
+}
+
 void Player::raise(int newBet) {
     currentBet = newBet;
     balance -= newBet;
@@ -84,6 +88,11 @@ void Player::set_hand_rank(int handRank) {
 
 void Player::describe() const {
     std::cout << "Name: " << name << ", Balance: $" << balance << ", Role: " << getRole() << std::endl;
+}
+
+void Player::modifyBalance() {
+    this->balance = this->balance*2;
+    std::cout<<"Felicitari, Decorator Pattern si-a facut treaba si ti s-a dublat balanta =) noua balanta: " << this->balance << "\n";
 }
 
 Player::Player(const Player &other)

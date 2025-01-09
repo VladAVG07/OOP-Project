@@ -5,7 +5,9 @@
 
 #include <iostream>
 
-void Validator::getWinner(std::vector<std::shared_ptr<Player>> &players) {
+#include "../include/Collection.h"
+
+void Validator::getWinner(Collection<std::shared_ptr<Player>> &players) {
     int maxRank = 0;
     for(const auto& player : players) {
         if(player->getHandRank() > maxRank) maxRank = player->getHandRank();
@@ -18,7 +20,7 @@ void Validator::getWinner(std::vector<std::shared_ptr<Player>> &players) {
     }
 }
 
-void Validator::setRanks(std::vector<std::shared_ptr<Player>> &players) {
+void Validator::setRanks(Collection<std::shared_ptr<Player>> &players) {
     for (const auto& currentPlayer : players) {
         std::vector<Card> currHand = currentPlayer->hand1();
 

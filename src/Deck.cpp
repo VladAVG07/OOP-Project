@@ -7,17 +7,17 @@
 #include <iostream>
 
 Deck::Deck() {
-    this->textura = new sf::Texture;
-    if(!this->textura->loadFromFile("../assets/deck-of-cards/Back1.png")) {
-        std::cout<< "aiaus\n";
-    }
-    this->sprite = new sf::Sprite;
-    this->sprite->setTexture(*this->textura);
-    this->sprite->setScale(2, 2);
+    // this->textura = new sf::Texture;
+    // if(!this->textura->loadFromFile("../assets/deck-of-cards/Back1.png")) {
+    //     std::cout<< "aiaus\n";
+    // }
+    // this->sprite = new sf::Sprite;
+    // this->sprite->setTexture(*this->textura);
+    // this->sprite->setScale(2, 2);
     for (int i = 0; i < 4; i++) {
         for (int j = 0; j < 13; j++) {
             Card c(ranks[j], suits[i]);
-            this->cards.push_back(c);
+            this->cards.add(c);
         }
     }
 }
@@ -44,7 +44,7 @@ Deck &Deck::operator=(Deck &&other) noexcept {
     return *this;
 }
 
-std::vector<Card> Deck::getCards() const {
+Collection<Card> Deck::getCards() const {
     return this->cards;
 }
 
@@ -55,21 +55,21 @@ void Deck::shuffle() {
         int j = rand() % (i + 1);
 
         Card aux;
-        aux = cards[i];
-        cards[i] = cards[j];
-        cards[j] = aux;
+        aux = cards.getAt(i);
+        cards.getAt(i) = cards.getAt(j);
+        cards.getAt(j) = aux;
     }
 }
 
 Card Deck::dealFromDeck() {
-    Card newCard = this->cards[cards.size() - 1];
-    this->cards.pop_back();
+    Card newCard = this->cards.getAt(cards.size() - 1);
+    this->cards.removeLast();
     return newCard;
 }
 
 std::ostream &operator<<(std::ostream &out, Deck &d) {
     for (int i = 0; i < d.DECK_SIZE; i++) {
-        out << d.cards[i];
+        out << d.cards.getAt(i);
     }
     return out;
 }

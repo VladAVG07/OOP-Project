@@ -36,6 +36,8 @@ public:
 
     [[nodiscard]] bool active1() const;
 
+    void set_balance(int balance);
+
     void raise(int newBet);
     void fold();
     void set_active(bool active);
@@ -57,6 +59,8 @@ public:
     [[nodiscard]] int getHandRank() const;
 
     void describe() const;
+
+    virtual void modifyBalance();
 
     Player(const Player &other);
     Player(Player &&other) noexcept;

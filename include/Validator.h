@@ -9,6 +9,7 @@
 #include "Card.h"
 #include "HumanPlayer.h"
 #include "Player.h"
+#include "Collection.h"
 
 
 class Validator {
@@ -16,8 +17,8 @@ public:
     Validator() = default;
     ~Validator();
 
-    static void getWinner(std::vector<std::shared_ptr<Player>> &players);
-    static void setRanks(std::vector<std::shared_ptr<Player>> &players);
+    static void getWinner(Collection<std::shared_ptr<Player>> &players);
+    static void setRanks(Collection<std::shared_ptr<Player>> &players);
     static void sortHand(std::vector<Card> &hand);
     static bool isRoyalFlush(std::vector<Card> &hand);
     static bool isStraightFlush(std::vector<Card> &hand);
