@@ -11,6 +11,7 @@
 #include "../include/Validator.h"
 #include "../include/PlayerDecorator.h"
 #include "../include/Collection.h"
+#include "../include/PlayerFactory.h"
 
 
 void Game::initWindow() {
@@ -81,8 +82,8 @@ void Game::start() {
             std::vector<Card> playerHand;
             playerHand.push_back(this->deck.dealFromDeck());
             playerHand.push_back(this->deck.dealFromDeck());
-            HumanPlayer p(playerHand, numeJucator, 1000);
-            this->players.add(std::move(std::make_shared<HumanPlayer>(p)));
+            auto p = PlayerFactory::createPlayer("Human" , numeJucator , 1000, playerHand );
+            this->players.add(p);
             auto player = players.getAt(i);
             if (player) {
                 std::cout << *player << '\n';
@@ -98,8 +99,8 @@ void Game::start() {
         dealerHand.push_back(this->deck.dealFromDeck());
         dealerHand.push_back(this->deck.dealFromDeck());
 
-        Dealer d(dealerHand, "Dealer", 1000);
-        this->players.add(std::move(std::make_shared<Dealer>(d)));
+        auto d = PlayerFactory::createPlayer("Dealer" , "Dealer" , 1000 , dealerHand);
+        this->players.add(d);
 
         std::cout << "Dealerul a intrat in joc, let's start" << "\n";
 

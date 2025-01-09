@@ -76,6 +76,8 @@ add_executable(${PROJECT_NAME}
         src/PlayerDecorator.cpp
         include/Collection.h
         src/Collection.tpp
+        include/PlayerFactory.h
+        src/PlayerFactory.cpp
 )
 
 include(cmake/CompilerFlags.cmake)
