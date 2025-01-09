@@ -11,13 +11,14 @@
 #include "Dealer.h"
 #include "HumanPlayer.h"
 #include "Player.h"
+#include "Collection.h"
 
 class Game {
 private:
     int nrRounds = 3;
     int nrPlayers;
     Deck deck;
-    std::vector<std::shared_ptr<Player>> players;
+    Collection<std::shared_ptr<Player>> players;
     std::vector<Card> tableCards;
 
     sf::RenderWindow *window;

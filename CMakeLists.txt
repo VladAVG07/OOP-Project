@@ -72,6 +72,10 @@ add_executable(${PROJECT_NAME}
         include/AIPlayer.h
         src/PokerExceptions.cpp
         include/PokerExceptions.h
+        include/PlayerDecorator.h
+        src/PlayerDecorator.cpp
+        include/Collection.h
+        src/Collection.tpp
 )
 
 include(cmake/CompilerFlags.cmake)
